@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import ThemeContext from '../context/ThemeContext';
 
 const Header = () => {
 
     //declaracion de un estado con un valor por defecto
     const [darkMode, setDarkMode] = useState(false);
+    const color = useContext(ThemeContext);
 
     const handleClick = () => {
 
@@ -12,7 +14,7 @@ const Header = () => {
 
     return ( 
         <div className="header">
-            <h1>ReactHooks</h1>
+            <h1 style={{ color }}>ReactHooks</h1>
 
             { /*Hacer el llamado del mi funcion para setear el estado*/ }
             <button type='button' onClick={handleClick}>{darkMode ? 'Dark Mode' : 'Light Mode'}</button>
