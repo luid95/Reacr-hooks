@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 
 //inicializadmos el state de favorites
 const initialState ={
@@ -33,6 +33,12 @@ const Characters = () => {
     const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
 
     /**
+     * Implementacion de useMemo
+     */
+    const [search, setSearch] = useState('');
+
+
+    /**
      * Lógica de useEffect
      * es una función con 2 parámetros
      * el primero es una función anónima donde va a estar la lógica
@@ -46,10 +52,29 @@ const Characters = () => {
 
     }, []);
 
-    //
+    //funcion que se encarga de agregar informacion al estado de favorites
     const handleClick = favorite => {
         dispatch({type: 'ADD_TO_FAVORITE', payload: favorite })
     }
+
+    //funcion que se encarga de realizar la busqueda 
+    const handleSearch = (event) => {
+
+        setSearch(event.target.value);
+    }
+
+    // const filteredUsers = characters.filter((user) => {
+    //     return user.name.toLowerCase().includes(search.toLowerCase());
+    // });
+
+    //Utilizacion de useMemo 
+    const filteredUsers = useMemo(() => 
+
+        characters.filter((user) => {
+            return user.name.toLowerCase().includes(search.toLowerCase());
+        }),
+        [characters,search]
+    );
 
     return (
 
@@ -64,10 +89,15 @@ const Characters = () => {
                     </li>
                 ))}
 
+                {/*Crear div para la busqueda */}
+                <div className="Search">
+                    <input type="text" value={search} onChange={handleSearch} />
+                </div>
+
                 {/* Nombre del personaje
                         Iteramos por cada uno de los elementos */}
                 <h2>Lista de personajes</h2>
-                {characters.map((character) => (
+                {filteredUsers.map((character) => (
                     <div className="item" key={character.id}>
                         <>
                             <img className="character__img" src={character.image} alt="" />
