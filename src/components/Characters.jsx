@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useReducer, useMemo, useRef } from 'react';
-
+import React, { useState, useEffect, useReducer, useMemo, useRef, useCallback } from 'react';
+import Search from './Search';
 //inicializadmos el state de favorites
 const initialState ={
     favorites: [],
@@ -63,10 +63,14 @@ const Characters = () => {
     }
 
     //funcion que se encarga de realizar la busqueda 
-    const handleSearch = () => {
+    // const handleSearch = () => {
 
+    //     setSearch(searchInput.current.value);
+    // }
+
+    const handleSearch = useCallback(() => {
         setSearch(searchInput.current.value);
-    }
+    }, []);
 
     // const filteredUsers = characters.filter((user) => {
     //     return user.name.toLowerCase().includes(search.toLowerCase());
@@ -95,9 +99,7 @@ const Characters = () => {
                 ))}
 
                 {/*Crear div para la busqueda */}
-                <div className="Search">
-                    <input type="text" value={search} ref={searchInput} onChange={handleSearch} />
-                </div>
+                <Search search={search} searchInput={searchInput} handleSearch={handleSearch} />
 
                 {/* Nombre del personaje
                         Iteramos por cada uno de los elementos */}
