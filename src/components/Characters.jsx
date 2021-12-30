@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React, { useState, useEffect, useReducer, useMemo, useRef } from 'react';
 
 //inicializadmos el state de favorites
 const initialState ={
@@ -37,6 +37,11 @@ const Characters = () => {
      */
     const [search, setSearch] = useState('');
 
+    /**
+     * Implementacion de useRef
+     */
+    const searchInput = useRef(null);
+
 
     /**
      * Lógica de useEffect
@@ -58,9 +63,9 @@ const Characters = () => {
     }
 
     //funcion que se encarga de realizar la busqueda 
-    const handleSearch = (event) => {
+    const handleSearch = () => {
 
-        setSearch(event.target.value);
+        setSearch(searchInput.current.value);
     }
 
     // const filteredUsers = characters.filter((user) => {
@@ -91,7 +96,7 @@ const Characters = () => {
 
                 {/*Crear div para la busqueda */}
                 <div className="Search">
-                    <input type="text" value={search} onChange={handleSearch} />
+                    <input type="text" value={search} ref={searchInput} onChange={handleSearch} />
                 </div>
 
                 {/* Nombre del personaje
