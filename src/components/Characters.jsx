@@ -1,9 +1,14 @@
-import React, { useState, useEffect, useReducer, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useReducer, useMemo, useRef, useCallback } from 'react';
 import Search from './Search';
+import useCharacters from '../hooks/useCharacter';
+
 //inicializadmos el state de favorites
 const initialState ={
     favorites: [],
 }
+
+//API
+const API = 'https://rickandmortyapi.com/api/character/';
 
 
 //Crear nuestro Reducer
@@ -22,12 +27,6 @@ const favoriteReducer = (state, action) => {
 const Characters = () => {
 
     /**
-     * Lógica de useState
-     * constante donde internamente estructuramos los elementos que necesitamos
-     * de useState y lo iniciamos como un array vacío
-     */
-    const [characters, setCharacters] = useState([]);
-    /**
      * implementacion de useReducer, y dispatch
      */
     const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
@@ -42,20 +41,8 @@ const Characters = () => {
      */
     const searchInput = useRef(null);
 
+    const characters = useCharacters(API);
 
-    /**
-     * Lógica de useEffect
-     * es una función con 2 parámetros
-     * el primero es una función anónima donde va a estar la lógica
-     * el segundo es una variable que esta escuchando si hay cambios 
-     */
-    useEffect(() => {
-        // useEffect llama a fetch, el cual obtiene la informacion de la api de RickAndMorty
-        fetch('https://rickandmortyapi.com/api/character/')
-        .then(response => response.json())
-        .then(data => setCharacters(data.results));
-
-    }, []);
 
     //funcion que se encarga de agregar informacion al estado de favorites
     const handleClick = favorite => {
